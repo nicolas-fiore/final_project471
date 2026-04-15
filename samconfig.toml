@@ -1,0 +1,19 @@
+version = 0.1
+
+[default.build.parameters]
+template_file = "/home/nicolasfiore/cloud_computing/final_project/template.yaml"
+cached = true
+parallel = true
+use_container = false
+
+[default.global.parameters]
+region = "us-east-1"
+
+[default.deploy.parameters]
+stack_name = "cmsc471hellostack"
+resolve_s3 = true
+s3_prefix = "cmsc471hellostack"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
