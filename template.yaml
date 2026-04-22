@@ -1,4 +1,11 @@
 Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  LabRoleArn:
+    Type: String
+    Description: The ARN of the LabRole AWS Learner Lab
+    Default: arn:aws:iam::404761969611:role/LabRole
+
 Resources:
   Api:
     Type: AWS::Serverless::Api
@@ -17,8 +24,8 @@ Resources:
         - ResourceName: HelloWorldFunction
       CodeUri: hello_service
       Handler: handler.handler
-      Role: arn:aws:iam::949571450787:role/LabRole
-      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      Runtime: python3.14
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -67,8 +74,8 @@ Resources:
         - ResourceName: StaticProxyFunction
       CodeUri: src/proxy
       Handler: proxy.proxy_handler
-      Runtime: python3.13
-      Role: arn:aws:iam::949571450787:role/LabRole
+      Runtime: python3.14
+      Role: !Ref LabRoleArn
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
