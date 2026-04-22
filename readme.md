@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     User[User brower] --> APIG[API Gateway\nPublic Entry Point]
 
@@ -39,3 +40,4 @@ graph TD
 
    
     CW[CloudWatch] -.-> SF
+```
