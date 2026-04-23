@@ -1,4 +1,9 @@
 Transform: AWS::Serverless-2016-10-31
+Parameters:
+  LabRoleArn:
+    Type: String
+    Description: The ARN of the LabRole AWS Learner Lab
+    Default: arn:aws:iam::949571450787:role/LabRole
 Resources:
   Api:
     Type: AWS::Serverless::Api
@@ -10,30 +15,39 @@ Resources:
       StageName: Prod
       EndpointConfiguration: REGIONAL
       TracingEnabled: true
-  HelloWorldFunction:
+  HealthFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description:
         Fn::Sub:
         - Stack ${AWS::StackName} Function ${ResourceName}
-        - ResourceName: HelloWorldFunction
-      CodeUri: HelloWorldFunction
+        - ResourceName: Healthunction
+      CodeUri: HealthFunction
       Handler: handler.handler
-      Role: arn:aws:iam::949571450787:role/LabRole
+      Role:
+        Ref: LabRoleArn
       Runtime: python3.13
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
       Environment: {}
+      Events:
+        ApiGET:
+          Type: Api
+          Properties:
+            Path: /api/health
+            Method: GET
+            RestApiId:
+              Ref: Api
     Metadata:
-      SamResourceId: HelloWorldFunction
-  HelloWorldFunctionLogGroup:
+      SamResourceId: HealthFunction
+  HeealthFunctionLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName:
-        Fn::Sub: /aws/lambda/${HelloWorldFunction}
+        Fn::Sub: /aws/lambda/${HealthFunction}
       RetentionInDays: 7
   Bucket:
     Type: AWS::S3::Bucket
@@ -78,7 +92,8 @@ Resources:
       CodeUri: StaticProxyFunction
       Handler: proxy.proxy_handler
       Runtime: python3.13
-      Role: arn:aws:iam::949571450787:role/LabRole
+      Role:
+        Ref: LabRoleArn
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -102,11 +117,95 @@ Resources:
       SamResourceId: StaticProxyFunction
   StaticProxyFunctionLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName:
         Fn::Sub: /aws/lambda/${StaticProxyFunction}
+      RetentionInDays: 7
+  InboxBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Sub: ${AWS::StackName}-inboxbuck-${AWS::AccountId}
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: aws:kms
+            KMSMasterKeyID: alias/aws/s3
+      PublicAccessBlockConfiguration:
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  InboxBucketBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: InboxBucket
+      PolicyDocument:
+        Id: RequireEncryptionInTransit
+        Version: '2012-10-17'
+        Statement:
+        - Principal: '*'
+          Action: '*'
+          Effect: Deny
+          Resource:
+          - Fn::GetAtt:
+            - InboxBucket
+            - Arn
+          - Fn::Sub: ${InboxBucket.Arn}/*
+          Condition:
+            Bool:
+              aws:SecureTransport: 'false'
+  LInbox:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description:
+        Fn::Sub:
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: LInbox
+      CodeUri: LInbox
+      Handler: handler.handler
+      Runtime: python3.13
+      Role:
+        Ref: LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          INBOX_BUCKET_NAME:
+            Ref: InboxBucket
+      Events:
+        ApiGETInbox:
+          Type: Api
+          Properties:
+            Path: /api/inbox
+            Method: GET
+            RestApiId:
+              Ref: Api
+        ApiPOSTInbox:
+          Type: Api
+          Properties:
+            Path: /api/inbox
+            Method: POST
+            RestApiId:
+              Ref: Api
+        ApiDELETEInbox:
+          Type: Api
+          Properties:
+            Path: /api/inbox/{key}
+            Method: DELETE
+            RestApiId:
+              Ref: Api
+    Metadata:
+      SamResourceId: LInbox
+  LInboxLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${LInbox}
       RetentionInDays: 7
 Outputs:
   HelloWorldApi:
@@ -116,3 +215,16 @@ Outputs:
   FrontendBucketName:
     Value:
       Ref: Bucket
+  FrontendDeployCommand:
+    Description: Run this command to deploy index.html to s3 bucket
+    Value:
+      Fn::Sub: aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html
+  FrontendTearDwonCommand:
+    Description: Run this command to remove index.html from s3 bucket
+    Value:
+      Fn::Sub: aws s3 rm s3://${Bucket}/index.html
+  RemoveStackCommand:
+    Description: Run this command to remove the stack
+    Value:
+      Fn::Sub: aws cloudformation delete-stack --stack-name ${AWS::StackName} --region
+        us-east-1
