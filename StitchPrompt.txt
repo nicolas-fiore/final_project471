@@ -1,0 +1,26 @@
+Make that main hello world box with the yellow shadow in to single-page app using the Yellow Sign Diner design with: a black background, yellow accent and cream text.
+
+Replace that main box body content with a three-panel layout. Keep the existing header/title. The three panels sit side by side and take up the full remaining viewport height. Here's what each panel needs:
+
+Left panel - Inbox: A labeled section called "Inbox". It contains a scrollable list of filenames (image files). Each item in the list shows the filename and a red X button on the right to delete/remove it. Items are selectable - clicking one highlights it as the currently selected file. There's an "Upload" button at the top or bottom of the panel to trigger a file upload (file input, accept image/*). The selected item should be visually distinct (yellow highlight or border).
+
+Middle panel - Process: A labeled section called "Process". Shows the currently selected filename from the left panel (or a placeholder if none selected). Has a large "Process" button styled prominently in yellow. Below that, a scrollable log area styled like a terminal/console (dark background, monospace font, cream or green text) that shows timestamped log messages appended over time as things happen. The log should have a "Clear Log" small button.
+
+Right panel - Records: A labeled section called "Records". Shows a scrollable table or card list of processed records (each with fields like filename, status, timestamp - keep it flexible). Has three buttons: "Load Records" (fetches from API), "Clear" (clears the display only), and "Delete All" (destructive, styled in red/warning). Records should display in a table with alternating row styling.
+
+General requirements:
+- Use React functional components with useState and useEffect only - no build step, React via CDN
+- All panels use the Yellow Sign Diner theme consistently
+- Panels should be roughly equal width (33% each), with a visible divider between them
+- The layout should use flexbox and fill the viewport below the header
+- Placeholder/mock data is fine - the API wiring comes later
+- Keep all HTML, CSS, and JS in a single index.html file
+- No external dependencies beyond React CDN and Google Fonts already in the file
+
+In the generated HTML, ensure the following five elements each have the exact id attribute listed. Do not change any styling, layout, or content — only add the id attributes:
+
+The file list table or container: id="inbox-list"
+The upload file button: id="upload-btn"
+The process/submit action button: id="process-btn"
+The activity log or terminal output area: id="log-area"
+The results/records table: id="records-table"
