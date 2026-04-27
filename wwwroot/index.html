@@ -1,171 +1,486 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Curator | Hello World</title>
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<html class="light" lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+		<title>NEON OPS - IMAGE DINER</title>
+		<!-- Fonts -->
+		<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;900&amp;family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+		<!-- Icons -->
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+		<!-- Tailwind -->
+		<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"/>
+		<script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             "colors": {
-                    "surface-container-highest": "#d9e4ea",
-                    "primary-dim": "#4a5268",
-                    "on-primary-fixed-variant": "#535b71",
-                    "error-dim": "#4e0309",
-                    "on-primary-fixed": "#373f54",
-                    "on-primary": "#f7f7ff",
-                    "surface-container-lowest": "#ffffff",
-                    "on-error": "#fff7f6",
-                    "surface-bright": "#f7f9fb",
-                    "tertiary": "#625b77",
-                    "secondary-fixed-dim": "#c7d5ed",
-                    "inverse-surface": "#0b0f10",
-                    "on-secondary": "#f8f8ff",
-                    "on-error-container": "#752121",
-                    "surface-container-low": "#f0f4f7",
-                    "surface-tint": "#565e74",
-                    "surface-variant": "#d9e4ea",
-                    "surface": "#f7f9fb",
-                    "primary-fixed": "#dae2fd",
-                    "on-secondary-fixed": "#324053",
-                    "secondary-container": "#d5e3fc",
-                    "secondary-dim": "#465468",
-                    "surface-dim": "#cfdce3",
-                    "on-primary-container": "#4a5167",
-                    "tertiary-container": "#dfd5f7",
-                    "error-container": "#fe8983",
-                    "surface-container-high": "#e1e9ee",
-                    "primary": "#565e74",
-                    "outline": "#717c82",
-                    "tertiary-fixed-dim": "#d0c7e8",
-                    "on-tertiary": "#fdf7ff",
-                    "inverse-primary": "#dae2fd",
-                    "error": "#9f403d",
-                    "tertiary-fixed": "#dfd5f7",
-                    "on-tertiary-fixed": "#3c3650",
-                    "on-background": "#2a3439",
-                    "tertiary-dim": "#564f6b",
-                    "secondary-fixed": "#d5e3fc",
-                    "on-tertiary-container": "#4f4964",
-                    "primary-fixed-dim": "#ccd4ee",
-                    "on-tertiary-fixed-variant": "#59526e",
-                    "background": "#f7f9fb",
-                    "primary-container": "#dae2fd",
-                    "on-secondary-fixed-variant": "#4e5c71",
-                    "inverse-on-surface": "#9a9d9f",
-                    "outline-variant": "#a9b4b9",
-                    "surface-container": "#e8eff3",
-                    "on-surface": "#2a3439",
-                    "on-surface-variant": "#566166",
-                    "on-secondary-container": "#455367",
-                    "secondary": "#526074"
+                "primary-fixed-dim": "#efc900",
+                "surface-container-highest": "#e1dcd4",
+                "error-container": "#f95630",
+                "on-secondary": "#f3f3f3",
+                "surface-bright": "#fbf6ef",
+                "on-secondary-fixed-variant": "#5b5b5b",
+                "secondary-container": "#e2e2e2",
+                "on-surface-variant": "#5d5b56",
+                "surface-container-high": "#e6e2da",
+                "surface-tint": "#6c5a00",
+                "surface": "#fbf6ef",
+                "on-primary-fixed-variant": "#665500",
+                "on-surface": "#302f2a",
+                "tertiary": "#536200",
+                "on-tertiary-container": "#516000",
+                "primary-dim": "#5e4e00",
+                "error": "#b02500",
+                "outline-variant": "#b0ada6",
+                "inverse-primary": "#ffd709",
+                "secondary-dim": "#4f4f4f",
+                "on-secondary-container": "#525252",
+                "tertiary-dim": "#485500",
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary-fixed-variant": "#5b6b00",
+                "inverse-on-surface": "#a09c96",
+                "tertiary-fixed": "#e3fd74",
+                "secondary": "#5b5b5b",
+                "surface-variant": "#e1dcd4",
+                "on-tertiary": "#e5ff76",
+                "background": "#fbf6ef",
+                "surface-dim": "#d8d4cb",
+                "on-error": "#ffefec",
+                "secondary-fixed-dim": "#d4d4d4",
+                "on-primary": "#fff2cd",
+                "tertiary-container": "#e3fd74",
+                "surface-container-low": "#f5f0e9",
+                "primary-fixed": "#ffd709",
+                "tertiary-fixed-dim": "#d5ee68",
+                "secondary-fixed": "#e2e2e2",
+                "on-secondary-fixed": "#3f3f3f",
+                "inverse-surface": "#0f0e0b",
+                "on-primary-container": "#5b4b00",
+                "primary-container": "#ffd709",
+                "error-dim": "#b92902",
+                "on-primary-fixed": "#453900",
+                "on-tertiary-fixed": "#414d00",
+                "on-background": "#302f2a",
+                "outline": "#797671",
+                "primary": "#6c5a00",
+                "on-error-container": "#520c00",
+                "surface-container": "#ece8e0"
             },
             "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
             },
             "fontFamily": {
-                    "headline": ["Manrope"],
-                    "body": ["Inter"],
-                    "label": ["Inter"]
+                "headline": ["Epilogue"],
+                "body": ["Plus Jakarta Sans"],
+                "label": ["Plus Jakarta Sans"],
+                "mono": ["JetBrains Mono"]
             }
           },
         },
       }
     </script>
-<style>
+		<style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            vertical-align: middle;
         }
-        /* Custom Ambient Shadows per Design System */
-        .ambient-shadow {
-            box-shadow: 0px 4px 20px rgba(42, 52, 57, 0.04), 0px 12px 40px rgba(42, 52, 57, 0.06);
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 10px;
+        }
+        .glass-header {
+            background: rgba(45, 45, 45, 0.85);
+            backdrop-filter: blur(24px);
+        }
+        .terminal-glow {
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.05);
         }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
-<!-- TopAppBar -->
-<header class="bg-[#f7f9fb] dark:bg-slate-950 docked full-width top-0 z-50">
-<div class="max-w-7xl mx-auto px-12 py-8 flex justify-between items-center w-full">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-[#565e74] dark:text-slate-300" data-icon="menu">menu</span>
-<span class="text-2xl font-bold tracking-[-0.02em] text-[#2a3439] dark:text-white font-headline">The Curator</span>
-</div>
-<nav class="hidden md:flex items-center gap-8">
-<a class="text-[#565e74] dark:text-white font-bold font-headline hover:text-[#2a3439] transition-colors duration-200" href="#">Journal</a>
-<a class="text-[#565e74]/60 dark:text-slate-400 font-medium font-headline hover:text-[#2a3439] transition-colors duration-200" href="#">Archives</a>
-<button class="bg-[#565e74] text-white px-6 py-2 rounded-xl font-headline font-bold text-sm hover:scale-95 duration-200">Contact</button>
-</nav>
-</div>
-</header>
-<!-- Main Content Canvas -->
-<main class="flex-grow flex items-center justify-center px-6 py-12 relative overflow-hidden">
-<!-- Background Decor (Subtle shifts in color temperature) -->
-<div class="absolute top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none">
-<div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-secondary-container blur-[100px]"></div>
-<div class="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-primary-container blur-[100px]"></div>
-</div>
-<!-- The Hero Card (The "Silent Curator" Anchor) -->
-<section class="max-w-2xl w-full">
-<div class="bg-surface-container-lowest rounded-xl p-12 md:p-16 ambient-shadow text-center relative">
-<!-- Editorial Scale Header -->
-<h1 class="font-headline text-5xl md:text-6xl font-extrabold text-on-surface tracking-[-0.04em] mb-6">
-                    Hello World
-                </h1>
-<!-- Clinical Clarity Body Text -->
-<p class="font-body text-lg md:text-xl text-on-surface-variant max-w-md mx-auto leading-relaxed mb-10">
-                    Welcome to a space of intentional design and atmospheric clarity. Every element here is curated to provide presence through absence.
-                </p>
-<!-- CTA with Glass & Gradient Rule -->
-<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-<button class="bg-gradient-to-br from-primary to-primary-dim text-on-primary px-8 py-4 rounded-xl font-headline font-bold tracking-tight ambient-shadow hover:scale-95 transition-transform duration-200">
-                        Begin Exploring
+	</head>
+	<body class="bg-[#2d2d2d] text-[#fbf6ef] font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden h-screen">
+		<!-- TopAppBar -->
+		<header class="fixed top-0 left-0 right-0 z-50 glass-header flex justify-between items-center px-8 h-20 w-full border-b border-white/5">
+			<div class="flex items-center gap-6">
+				<div class="font-headline tracking-tighter uppercase font-black text-2xl text-[#ffd700]">
+                IMAGE DINER
+            </div>
+				<div class="hidden md:flex items-center gap-8 ml-8">
+					<a class="font-label text-sm uppercase tracking-widest text-[#ffd700] border-b-4 border-[#ffd700] py-7" href="#">Dashboard</a>
+					<a class="font-label text-sm uppercase tracking-widest text-[#e1dcd4] hover:bg-[#3d3d3d] px-4 py-2 rounded-xl transition-colors" href="#">Inbox</a>
+					<a class="font-label text-sm uppercase tracking-widest text-[#e1dcd4] hover:bg-[#3d3d3d] px-4 py-2 rounded-xl transition-colors" href="#">Process</a>
+					<a class="font-label text-sm uppercase tracking-widest text-[#e1dcd4] hover:bg-[#3d3d3d] px-4 py-2 rounded-xl transition-colors" href="#">Records</a>
+				</div>
+			</div>
+			<div class="flex items-center gap-4">
+				<button class="p-2 text-[#e1dcd4] hover:bg-white/10 rounded-full transition-all active:scale-90">
+					<span class="material-symbols-outlined">notifications</span>
+				</button>
+				<button class="p-2 text-[#e1dcd4] hover:bg-white/10 rounded-full transition-all active:scale-90">
+					<span class="material-symbols-outlined">terminal</span>
+				</button>
+				<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-black">
+					<span class="material-symbols-outlined">account_circle</span>
+				</div>
+			</div>
+		</header>
+		<!-- SideNav (Mobile Pivot) -->
+		<nav class="fixed left-0 top-0 h-full w-20 md:w-64 bg-[#1a1a1a] flex flex-col p-6 pt-28 z-40 hidden md:flex">
+			<div class="mb-10">
+				<h3 class="font-headline font-black text-xs uppercase tracking-[0.2em] text-[#b0ada6] mb-4">Station 01</h3>
+				<div class="flex items-center gap-3 p-3 bg-white/5 rounded-2xl">
+					<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"/>
+					<span class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Active Session</span>
+				</div>
+			</div>
+			<div class="flex flex-col gap-2">
+				<a class="flex items-center gap-4 p-4 bg-[#ffd700] text-[#302f2a] rounded-[12px] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] font-bold transition-all" href="#">
+					<span class="material-symbols-outlined">dashboard</span>
+					<span class="text-xs uppercase tracking-widest">Dashboard</span>
+				</a>
+				<a class="flex items-center gap-4 p-4 text-[#b0ada6] hover:bg-[#2d2d2d] hover:translate-x-1 rounded-[12px] font-bold transition-all" href="#">
+					<span class="material-symbols-outlined">inbox</span>
+					<span class="text-xs uppercase tracking-widest">Inbox</span>
+				</a>
+				<a class="flex items-center gap-4 p-4 text-[#b0ada6] hover:bg-[#2d2d2d] hover:translate-x-1 rounded-[12px] font-bold transition-all" href="#">
+					<span class="material-symbols-outlined">settings_input_component</span>
+					<span class="text-xs uppercase tracking-widest">Process</span>
+				</a>
+				<a class="flex items-center gap-4 p-4 text-[#b0ada6] hover:bg-[#2d2d2d] hover:translate-x-1 rounded-[12px] font-bold transition-all" href="#">
+					<span class="material-symbols-outlined">database</span>
+					<span class="text-xs uppercase tracking-widest">Records</span>
+				</a>
+			</div>
+			<button class="mt-8 bg-primary text-on-primary px-6 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all">
+            NEW BATCH
+        </button>
+			<div class="mt-auto pt-6 border-t border-white/5 flex flex-col gap-2">
+				<a class="flex items-center gap-4 p-2 text-[#b0ada6] hover:text-[#ffd700] transition-colors" href="#">
+					<span class="material-symbols-outlined">settings</span>
+					<span class="text-xs font-bold uppercase tracking-widest">System</span>
+				</a>
+				<a class="flex items-center gap-4 p-2 text-[#b0ada6] hover:text-[#ffd700] transition-colors" href="#">
+					<span class="material-symbols-outlined">receipt_long</span>
+					<span class="text-xs font-bold uppercase tracking-widest">Logs</span>
+				</a>
+			</div>
+		</nav>
+		<!-- Main Content Canvas -->
+		<main class="md:ml-64 pt-20 h-full">
+			<div class="grid grid-cols-1 md:grid-cols-3 h-full divide-x divide-white/5">
+				<!-- Column 1: Inbox -->
+				<section class="flex flex-col h-full bg-[#2d2d2d]">
+					<div class="p-8 pb-4">
+						<h2 class="font-headline font-black text-4xl text-[#ffd700] uppercase tracking-tighter">Inbox</h2>
+						<p class="text-[#b0ada6] font-bold text-xs uppercase tracking-widest mt-2">Incoming visual data</p>
+					</div>
+					<div class="flex-grow overflow-y-auto px-8 custom-scrollbar">
+						
+						<!--inbox-list -->
+						<table class="w-full text-left border-separate border-spacing-y-3" id="inbox-list">
+						
+							<thead>
+								<tr class="text-[#b0ada6] text-[10px] uppercase tracking-[0.2em] font-black">
+									<th class="pb-2">Filename</th>
+									<th class="pb-2 text-right">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="group cursor-pointer bg-[#3d3d3d] hover:bg-[#ffd700]/10 transition-colors rounded-xl border-2 border-transparent focus-within:border-[#ffd700]">
+									<td class="py-4 px-4 font-bold text-sm">IMG_9921_RAW.PNG</td>
+									<td class="py-4 px-4 text-right">
+										<button class="text-error-container hover:scale-125 transition-transform">
+											<span class="material-symbols-outlined text-lg">close</span>
+										</button>
+									</td>
+								</tr>
+								<tr class="group cursor-pointer bg-[#ffd700] text-[#302f2a] rounded-xl border-2 border-[#ffd700]">
+									<td class="py-4 px-4 font-bold text-sm">BURGER_MACRO_01.JPG</td>
+									<td class="py-4 px-4 text-right">
+										<button class="text-error hover:scale-125 transition-transform">
+											<span class="material-symbols-outlined text-lg">close</span>
+										</button>
+									</td>
+								</tr>
+								<tr class="group cursor-pointer bg-[#3d3d3d] hover:bg-[#ffd700]/10 transition-colors rounded-xl">
+									<td class="py-4 px-4 font-bold text-sm">DINER_INTERIOR_LIGHT.TIFF</td>
+									<td class="py-4 px-4 text-right">
+										<button class="text-error-container hover:scale-125 transition-transform">
+											<span class="material-symbols-outlined text-lg">close</span>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="p-8 pt-4">
+					
+						<!-- upload-btn -->
+						
+						<button id="upload-btn" class="w-full bg-surface-container-highest text-[#302f2a] py-6 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-white transition-all active:scale-95 shadow-xl">
+							<span class="material-symbols-outlined">cloud_upload</span>
+                        Upload File
                     </button>
-<button class="bg-transparent text-primary px-8 py-4 rounded-xl font-headline font-bold border border-outline-variant/15 hover:bg-surface-container-low transition-all duration-200">
-                        Learn More
+					
+					</div>
+				</section>
+				<!-- Column 2: Process -->
+				<section class="flex flex-col h-full bg-[#1e1e1e]">
+					<div class="p-8 pb-4">
+						<h2 class="font-headline font-black text-4xl text-[#ffd700] uppercase tracking-tighter">Process</h2>
+						<p class="text-[#b0ada6] font-bold text-xs uppercase tracking-widest mt-2">Active pipeline control</p>
+					</div>
+					<div class="flex-grow flex flex-col p-8 gap-8 overflow-hidden">
+						<div class="bg-[#2d2d2d] p-6 rounded-3xl border border-white/5 relative overflow-hidden group">
+							<div class="absolute top-0 right-0 p-4 opacity-10">
+								<span class="material-symbols-outlined text-8xl">image</span>
+							</div>
+							<span class="text-[#b0ada6] text-[10px] uppercase font-black tracking-widest">Selected Item</span>
+							<h4 class="text-xl font-black text-[#ffd700] mt-1 break-all">BURGER_MACRO_01.JPG</h4>
+						</div>
+						
+						<!-- process-btn -->
+
+						<button class="w-full bg-[#ffd700] text-[#302f2a] py-10 rounded-[2rem] font-black text-2xl uppercase tracking-tighter flex items-center justify-center gap-4 hover:brightness-110 active:scale-95 shadow-[0_20px_50px_rgba(255,215,0,0.15)] transition-all" id="process-btn">
+							<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        PROCESS NOW
                     </button>
-</div>
-<!-- Decorative Asset -->
-<div class="mt-12 opacity-80">
-<img alt="Minimalist abstract" class="w-full h-48 object-cover rounded-md" data-alt="Close-up of clean white paper layers casting soft architectural shadows in a sunlit minimalist gallery setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ46idfYdbXgGXag-PnSjGBWkvgIhbZAEVwuKYeT_GjvrU3CCMfNiM3oN3dXD67VTLfkDM0ObCeahCW3Nd4NX5kqV2p8baCBr5sGYU93svDo7wNOPI74pw5pCdYLvkqUQDB_8V5tSRwXmiSjxJyNqA4D08cj0WHvLJzHHsylYiuLz-PVAX8HeXVBNgbroOJmUt7swFSl0bozLmeQ4MUerqeoVNmEdxGdz7D4vJRr79Hf-UOVUR4bcLWcrfAfG9qeZ_c7VQI6wWCWyK"/>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="bg-[#f7f9fb] dark:bg-slate-950 w-full py-16">
-<div class="max-w-7xl mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-8">
-<div class="flex flex-col items-center md:items-start gap-2">
-<span class="text-lg font-bold text-[#565e74] font-headline">The Silent Curator</span>
-<p class="font-['Inter'] text-sm tracking-wide text-[#565e74]/50 dark:text-slate-500">
-                    © 2024 The Silent Curator. All rights reserved.
-                </p>
-</div>
-<div class="flex gap-8">
-<a class="font-['Inter'] text-sm tracking-wide text-[#565e74]/50 dark:text-slate-500 hover:text-[#565e74] dark:hover:text-slate-200 transition-all opacity-80" href="#">Privacy Policy</a>
-<a class="font-['Inter'] text-sm tracking-wide text-[#565e74]/50 dark:text-slate-500 hover:text-[#565e74] dark:hover:text-slate-200 transition-all opacity-80" href="#">Terms of Service</a>
-<a class="font-['Inter'] text-sm tracking-wide text-[#565e74] underline underline-offset-4 transition-all opacity-80" href="#">Journal</a>
-</div>
-</div>
-</footer>
-</body></html>
+					
+						<div class="flex-grow flex flex-col min-h-0">
+							<div class="flex justify-between items-center mb-2 px-2">
+								<span class="text-[#b0ada6] text-[10px] uppercase font-black tracking-widest">System Output</span>
+								<button class="text-[#ffd700] text-[10px] font-black uppercase tracking-widest hover:underline transition-all">Clear Log</button>
+							</div>
+							
+							<!-- log-area -->
+							<div class="flex-grow bg-black rounded-2xl p-6 font-mono text-[11px] text-[#ffd700]/80 overflow-y-auto custom-scrollbar terminal-glow leading-relaxed" id="log-area">
+							
+								<p class="text-[#ffd700]">[SYSTEM] DINER_OPS BOOT SUCCESSFUL...</p>
+								<p class="text-[#b0ada6]">[INFO] AWS ENDPOINT: US-EAST-1</p>
+								<p class="text-[#b0ada6]">[INFO] READY FOR INPUTS</p>
+								<p class="text-[#ffd700] mt-2">&gt; SELECTED: BURGER_MACRO_01.JPG</p>
+								<p class="text-white/40 italic">&gt; Pipeline standby...</p>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- Column 3: Records -->
+				<section class="flex flex-col h-full bg-[#2d2d2d]">
+					<div class="p-8 pb-4">
+						<h2 class="font-headline font-black text-4xl text-[#ffd700] uppercase tracking-tighter">Records</h2>
+						<p class="text-[#b0ada6] font-bold text-xs uppercase tracking-widest mt-2">Historical batch data</p>
+					</div>
+					<div class="flex-grow overflow-y-auto px-8 custom-scrollbar">
+					
+						<!-- records-table -->
+						<table class="w-full text-left" id="records-table">
+
+							<thead>
+								<tr class="text-[#b0ada6] text-[10px] uppercase tracking-[0.2em] font-black border-b border-white/5">
+									<th class="pb-4">Filename</th>
+									<th class="pb-4">Status</th>
+									<th class="pb-4 text-right">Time</th>
+								</tr>
+							</thead>
+							<tbody class="text-sm">
+								<tr class="bg-[#333333]">
+									<td class="py-4 px-2 font-bold">COFFEE_MUG.PNG</td>
+									<td class="py-4 px-2">
+										<span class="bg-[#536200] text-[#e5ff76] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Success</span>
+									</td>
+									<td class="py-4 px-2 text-right text-[#b0ada6] tabular-nums">14:02:11</td>
+								</tr>
+								<tr class="bg-[#2d2d2d]">
+									<td class="py-4 px-2 font-bold">MENU_V2.PDF</td>
+									<td class="py-4 px-2">
+										<span class="bg-error-container text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Error</span>
+									</td>
+									<td class="py-4 px-2 text-right text-[#b0ada6] tabular-nums">13:45:02</td>
+								</tr>
+								<tr class="bg-[#333333]">
+									<td class="py-4 px-2 font-bold">NEON_SIGN_NIGHT.JPG</td>
+									<td class="py-4 px-2">
+										<span class="bg-[#536200] text-[#e5ff76] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Success</span>
+									</td>
+									<td class="py-4 px-2 text-right text-[#b0ada6] tabular-nums">12:30:44</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="p-8 pt-4 grid grid-cols-3 gap-3">
+						<button class="bg-[#3d3d3d] text-[#e1dcd4] py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95">
+                        Load
+                    </button>
+						<button class="bg-[#3d3d3d] text-[#e1dcd4] py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95">
+                        Clear
+                    </button>
+						<button class="bg-error-container text-white py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:brightness-110 transition-all active:scale-95">
+                        Del All
+                    </button>
+					</div>
+				</section>
+			</div>
+		</main>
+		<!-- Visual Accents -->
+		<div class="fixed bottom-10 right-10 z-50">
+			<button class="w-16 h-16 bg-[#ffd700] text-[#302f2a] rounded-2xl shadow-[0_10px_30px_rgba(255,215,0,0.3)] flex items-center justify-center hover:-translate-y-1 transition-all group">
+				<span class="material-symbols-outlined text-3xl font-black group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">help</span>
+			</button>
+		</div>
+		<!-- Background Decoration -->
+		<div class="fixed inset-0 pointer-events-none opacity-5 overflow-hidden">
+			<div class="absolute -top-1/4 -right-1/4 w-[800px] h-[800px] bg-[#ffd700] rounded-full blur-[200px]"/>
+			<div class="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#ffd700] rounded-full blur-[150px]"/>
+		</div>
+		<!-- AWS Integration Stubs -->
+
+		    <script>   
+                "use strict";
+                // id="inbox-list"  
+                // id="process-btn"
+                // id="records-table"
+                // id="log-area"
+                // id="upload-btn"
+
+                // This is where the API gateway address goes:
+                const API = 'https://??';
+
+
+                // --- Inbox API calls
+                // Three funcions, GET, POST, and DELETE to /api/inbox
+                // Fx to fetch list of images from S3 via Lambda
+                async function loadInbox() {
+                    // Fetch list of files from S3 via Lambda
+                    const res = await fetch(`${API}/api/inbox`);
+                    const files = await res.json();
+                    renderInbox(files);
+                }
+
+                async function uploadFile(file) {
+                    const form = new FormData();
+                    form.append('file', file);
+                    await fetch(`${API}/api/inbox`, {
+                        method: 'POST',
+                        body: form
+                    }); 
+                    loadInbox();
+                }
+
+
+                async function deleteFile(filename){
+                    await fetch(`${API}/api/inbox?filename=${encodeURIComponent(filename)}`, {
+                        method: 'DELETE'
+                    });
+                    loadInbox();
+                }
+
+                function renderInbox(files) {
+                    const tbody = document.querySelector('#inbox-list tbody');
+                    tbody.innerHTML = '';
+                   
+                    files.forEach(filename => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'group cursor-pointer bg-[#3d3d3d] hover:bg-[#ffd700]/10 transition-colors rounded-xl'; 
+
+                        tr.innerHTML = ` 
+                            <td class="py-4 px-4 font-bold text-sm">${filename}</td>
+                            <td class="py-4 px-4 text-right">
+                                <button onclick="deleteFile('${filename}')" class="text-error-container hover:scale-125 transition-transform">)"
+                                    close
+                                </button>
+                                </td>`;
+                            tbody.appendChild(tr);
+                        })
+                }
+
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                document.body.appendChild(fileInput);
+
+                document.getElementById('upload-btn').addEventListener('click', () => {
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', () => {
+                   if (fileInput.files[0]) {
+                       uploadFile(fileInput.files[0]);
+                   }
+                });
+
+                document.getElementById('process-btn').addEventListener('click', () => {
+                    const log = document.getElementById('log-area');
+                    const p = document.createElement('p');
+                    p.className = 'text-[#ffd700] mt-1';
+                    p.textContent = `[${new Date().toLocaleTimeStrong()}] `;
+                    log.appendChild(p);
+                    log.scrollTop = log.scrollHeight;
+                });
+
+
+
+
+
+                loadInbox();
+
+
+
+            </script>
+
+
+
+    "use strict";
+    // id="inbox-list"  
+    // id="process-btn"
+    // id="records-table"
+    // id="log-area"
+    // id="upload-btn"
+
+    
+                 
+
+    // --- Inbox API calls
+    // Three funcions, GET, POST, and DELETE to /api/inbox
+    // Fx to fetch list of images from S3 via Lambda
+
+
+    // Uploads a file to S3 via Lambda, then refreshes the list
+
+
+    // Deletes a single file from S3 via Lambda then refreshes the list
+    //  /api/inbox/{key}
+
+
+    // Selected file tracker
+
+
+    // Instead of updating individual rows in our list,
+    // we will wipe the list and reload it every time the data changes.
+    // Normally you would files.map(f => <tr>...</tr>)
+    // This is doing the same thing manually
+
+
+    // Upload button
+    // 
+
+
+    // Process button for later
+    // 
+
+
+    // Init, load the Inbox upon page load.
+
+
+	</body>
+</html

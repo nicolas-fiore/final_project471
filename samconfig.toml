@@ -17,3 +17,4 @@ confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 disable_rollback = true
 image_repositories = []
+parameter_overrides = "LabRoleArn=\"arn:aws:iam::949571450787:role/LabRole\""
