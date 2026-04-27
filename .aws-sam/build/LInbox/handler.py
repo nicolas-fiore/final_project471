@@ -1,8 +1,13 @@
 import json
+from botocore.config import Config
 import boto3
 import os
 
-s3 = boto3.client('s3')
+s3 = boto3.client(
+    's3',
+    region_name='us-east-1',
+    config=Config(signature_version='s3v4')          
+    )
 BUCKET = os.environ['INBOX_BUCKET_NAME']
 
 def handler(event, context):
@@ -24,8 +29,7 @@ def handler(event, context):
         url = s3.generate_presigned_url(
             'put_object',
             Params={'Bucket': BUCKET, 
-                    'Key': filename,
-                    'ContentType': 'image/png'}, 
+                    'Key': filename}, 
             ExpiresIn=300)
         return {
             'statusCode': 200,

@@ -107,6 +107,20 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${AWS::StackName}-inboxbuck-${AWS::AccountId}
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+            AllowedOrigins:
+              - '*'
+            ExposedHeaders:
+              - ETag
+            MaxAge: 300
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -167,7 +181,6 @@ Resources:
             Path: /api/inbox/{key}
             Method: DELETE
             RestApiId: !Ref Api
-
   LInboxLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
@@ -183,7 +196,7 @@ Outputs:
     Value: !Ref Bucket
   FrontendDeployCommand:
     Description: Run this command to deploy index.html to s3 bucket
-    Value: !Sub aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html
+    Value: !Sub 'aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html'
   FrontendTearDwonCommand:
     Description: Run this command to remove index.html from s3 bucket
     Value: !Sub aws s3 rm s3://${Bucket}/index.html

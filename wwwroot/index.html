@@ -353,8 +353,8 @@
                 // id="upload-btn"
 
                 // This is where the API gateway address goes:
-                const API = 'https://??';
-
+				// Prolly have to change link HERE
+                const API = 'https://md4zlpa2q9.execute-api.us-east-1.amazonaws.com/Prod';
 
                 // --- Inbox API calls
                 // Three funcions, GET, POST, and DELETE to /api/inbox
@@ -365,20 +365,25 @@
                     const files = await res.json();
                     renderInbox(files);
                 }
-
+				// Uploads a file to S3 Via Lambda
                 async function uploadFile(file) {
-                    const form = new FormData();
-                    form.append('file', file);
-                    await fetch(`${API}/api/inbox`, {
-                        method: 'POST',
-                        body: form
-                    }); 
+                    const res = await fetch(`${API}/api/inbox`, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ filename: file.name })
+					});
+					const data = await res.json(); 
+					await fetch(data.url, {
+						method: 'PUT',
+						headers: {'Content-Type': 'image/png'},
+						body: file
+					});
                     loadInbox();
                 }
 
-
+				// Deletes a single file from S3 via Lambda
                 async function deleteFile(filename){
-                    await fetch(`${API}/api/inbox?filename=${encodeURIComponent(filename)}`, {
+                    await fetch(`${API}/api/inbox/${encodeURIComponent(filename)}`, {
                         method: 'DELETE'
                     });
                     loadInbox();
@@ -395,14 +400,14 @@
                         tr.innerHTML = ` 
                             <td class="py-4 px-4 font-bold text-sm">${filename}</td>
                             <td class="py-4 px-4 text-right">
-                                <button onclick="deleteFile('${filename}')" class="text-error-container hover:scale-125 transition-transform">)"
-                                    close
+                                <button onclick="deleteFile('${filename}')" class="text-error-container hover:scale-125 transition-transform">
+                                    <span class="material-symbols-outlined text-lg">close</span>
                                 </button>
-                                </td>`;
+                            </td>`;
                             tbody.appendChild(tr);
                         })
                 }
-
+				// Upload Button
                 const fileInput = document.createElement('input');
                 fileInput.type = 'file';
                 fileInput.accept = 'image/*';
@@ -416,9 +421,10 @@
                 fileInput.addEventListener('change', () => {
                    if (fileInput.files[0]) {
                        uploadFile(fileInput.files[0]);
+					   fileInput.value = ''; 
                    }
                 });
-
+				// Process btn
                 document.getElementById('process-btn').addEventListener('click', () => {
                     const log = document.getElementById('log-area');
                     const p = document.createElement('p');
@@ -427,11 +433,7 @@
                     log.appendChild(p);
                     log.scrollTop = log.scrollHeight;
                 });
-
-
-
-
-
+				//Init, load the inbox upon page load
                 loadInbox();
 
 
