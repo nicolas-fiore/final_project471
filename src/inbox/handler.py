@@ -1,7 +1,8 @@
 import json
+import os
 from botocore.config import Config
 import boto3
-import os
+
 
 s3 = boto3.client(
     's3',

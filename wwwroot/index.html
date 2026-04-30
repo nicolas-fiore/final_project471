@@ -389,6 +389,10 @@
                     loadInbox();
                 }
 
+				//Selected file tracker
+				let selectedFile = null;
+
+
                 function renderInbox(files) {
                     const tbody = document.querySelector('#inbox-list tbody');
                     tbody.innerHTML = '';
@@ -404,6 +408,17 @@
                                     <span class="material-symbols-outlined text-lg">close</span>
                                 </button>
                             </td>`;
+
+						//Click a row, save the filename, highlight it.
+						tr.addEventListener('click', (e) => {
+							if (e.target.closest('button')) return; //Ignore clicks on the delete button
+							selectedFile = filename;
+							document.querySelectorAll('#inbox-list tbody tr')
+							.forEach(row => //clear all highlights
+								row.classList.remove('ring-2', 'ring-[#ffd700]'));
+							tr.classList.add('ring-2', 'ring-[#ffd700]'); //Highlight selected
+						});
+
                             tbody.appendChild(tr);
                         })
                 }
@@ -425,14 +440,38 @@
                    }
                 });
 				// Process btn
-                document.getElementById('process-btn').addEventListener('click', () => {
-                    const log = document.getElementById('log-area');
-                    const p = document.createElement('p');
-                    p.className = 'text-[#ffd700] mt-1';
-                    p.textContent = `[${new Date().toLocaleTimeStrong()}] `;
-                    log.appendChild(p);
-                    log.scrollTop = log.scrollHeight;
+                document.getElementById('process-btn').addEventListener('click', async () => {
+                   if( !selectedFile) return;
+
+				   //POST the filename and get back a jobID
+				   const res = await fetch(`${API}/api/jobs`, {
+					   method: 'POST',
+					   headers: { 'Content-Type': 'application/json' },
+					   body: JSON.stringify({ filename: selectedFile })
                 });
+
+				
+				const { jobId } = await res.json(); //Pull jobID out of the response
+
+				//Poll every 2 seconds unti lthe job finishes
+				const internal = setInterval(async () => {
+					const poll = await fetch(`${API}/api/jobs/${jobId}`); //ask server for status
+					const job = await poll.json();
+					
+					const log = document.getElementById('log-area');
+					const p = document.createElement('p');
+					p.textContent = job.message; //print whatever lambda returned]
+					log.appendChild(p);
+					log.scrollTop = log.scrollHeight; //Auto scroll to bottom
+
+					if (job.status === 'SUCCEEDED' || job.status === 'FAILED') {
+						clearInterval(internal); //Stop polling when done
+					}	
+
+				}, 2000); 
+				});
+
+
 				//Init, load the inbox upon page load
                 loadInbox();
 
