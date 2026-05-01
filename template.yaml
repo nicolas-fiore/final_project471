@@ -4,7 +4,7 @@ Parameters:
   LabRoleArn:
     Type: String
     Description: The ARN of the LabRole AWS Learner Lab
-    Default: arn:aws:iam::949571450787:role/LabRole
+    Default: arn:aws:iam::404761969611:role/LabRole  #update this when booting
 Resources:
   Api:
     Type: AWS::Serverless::Api
@@ -24,7 +24,7 @@ Resources:
       CodeUri: health_service
       Handler: handler.handler
       Role: !Ref LabRoleArn
-      Runtime: python3.13
+      Runtime: python3.13  #Change to 3.13
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -80,7 +80,7 @@ Resources:
         - ResourceName: StaticProxyFunction
       CodeUri: src/proxy
       Handler: proxy.proxy_handler
-      Runtime: python3.13
+      Runtime: python3.13 #Change to 3.13
       Role: !Ref LabRoleArn
       MemorySize: 3008
       Timeout: 30
@@ -107,6 +107,20 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${AWS::StackName}-inboxbuck-${AWS::AccountId}
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+            AllowedOrigins:
+              - '*'
+            ExposedHeaders:
+              - ETag
+            MaxAge: 300
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -140,7 +154,7 @@ Resources:
         - ResourceName: LInbox
       CodeUri: src/inbox
       Handler: handler.handler
-      Runtime: python3.13
+      Runtime: python3.13 #Change to 3.13
       Role: !Ref LabRoleArn
       MemorySize: 3008
       Timeout: 30
@@ -167,7 +181,6 @@ Resources:
             Path: /api/inbox/{key}
             Method: DELETE
             RestApiId: !Ref Api
-
   LInboxLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
@@ -183,10 +196,13 @@ Outputs:
     Value: !Ref Bucket
   FrontendDeployCommand:
     Description: Run this command to deploy index.html to s3 bucket
-    Value: !Sub aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html
-  FrontendTearDwonCommand:
+    Value: !Sub 'aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html'
+  FrontendTeardownCommand:
     Description: Run this command to remove index.html from s3 bucket
     Value: !Sub aws s3 rm s3://${Bucket}/index.html
+  InboxBucketTeardownCommand:
+    Description: Run this command to remove any uploads to our inbox s3 bucket
+    Value: !Sub aws s3 rb s3://${InboxBucket} --recursive --dryrun
   RemoveStackCommand:
     Description: Run this command to remove the stack
     Value: !Sub aws cloudformation delete-stack --stack-name ${AWS::StackName}
