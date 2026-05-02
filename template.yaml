@@ -350,6 +350,37 @@ Resources:
       LogGroupName: !Sub
         - /aws/vendedlogs/states/${AWS::StackName}-${ResourceId}-Logs
         - ResourceId: StateMachine
+  LPoll:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: LPoll
+      CodeUri: src/lpoll
+      Handler: lpoll.handler
+      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          JOB_TABLE: !Ref JobsTable
+
+      Events:
+        ApiGETPoll:
+          Type: Api
+          Properties:
+            Path: /api/jobs/{jobId}
+            Method: GET
+            RestApiId: !Ref Api
+  LPollLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LPoll}
+      RetentionInDays: 7
 Outputs:
   HelloWorldApi:
     Description: 'API Gateway endpoint URL for Prod:'
