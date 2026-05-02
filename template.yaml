@@ -4,7 +4,7 @@ Parameters:
   LabRoleArn:
     Type: String
     Description: The ARN of the LabRole AWS Learner Lab
-    Default: arn:aws:iam::404761969611:role/LabRole  #update this when booting
+    Default: arn:aws:iam::949571450787:role/LabRole
 Resources:
   Api:
     Type: AWS::Serverless::Api
@@ -24,7 +24,7 @@ Resources:
       CodeUri: health_service
       Handler: handler.handler
       Role: !Ref LabRoleArn
-      Runtime: python3.13  #Change to 3.13
+      Runtime: python3.13
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -80,7 +80,7 @@ Resources:
         - ResourceName: StaticProxyFunction
       CodeUri: src/proxy
       Handler: proxy.proxy_handler
-      Runtime: python3.13 #Change to 3.13
+      Runtime: python3.13
       Role: !Ref LabRoleArn
       MemorySize: 3008
       Timeout: 30
@@ -154,7 +154,7 @@ Resources:
         - ResourceName: LInbox
       CodeUri: src/inbox
       Handler: handler.handler
-      Runtime: python3.13 #Change to 3.13
+      Runtime: python3.13
       Role: !Ref LabRoleArn
       MemorySize: 3008
       Timeout: 30
@@ -188,6 +188,168 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${LInbox}
       RetentionInDays: 7
+  lsubmit:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: Lsubmit
+      CodeUri: src/lsubmit
+      Handler: handler.handler
+      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          JOB_TABLE: !Ref JobsTable
+          STATE_MACHINE_ARN: !Ref StateMachine
+      Events:
+        SubmitApi:
+          Type: Api
+          Properties:
+            Path: /api/jobs
+            Method: POST
+            RestApiId: !Ref Api
+  lsubmitLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${lsubmit}
+      RetentionInDays: 7
+  JobsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: jobid
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: jobid
+          KeyType: HASH
+  L1Fetch:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: L1Fetch
+      CodeUri: src/statemachine
+      Handler: l1fetch.handler
+      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment: {}
+  L1FetchLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${L1Fetch}
+      RetentionInDays: 7
+  L2Call:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: L2Call
+      CodeUri: src/statemachine
+      Handler: l2call.handler
+      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment: {}
+  L2CallLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${L2Call}
+      RetentionInDays: 7
+  L3Save:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: L3Save
+      CodeUri: src/statemachine
+      Handler: l3save.handler
+      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment: {}
+  L3SaveLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${L3Save}
+      RetentionInDays: 7
+  StateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Role: !Ref LabRoleArn
+      Definition:
+        Comment: Shopping list image porcessing pipline
+        StartAt: FetchImage
+        States:
+          FetchImage:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke
+            Parameters:
+              FunctionName: ${L1FetchArn}
+              payload.$: $
+            ResultSelector:
+              job_id.$: $.Payload.job_id
+              filename.$: $.Payload.filename
+              bucket.$: $.Payload.bucket
+            Next: CallTextract
+          CallTextract:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke
+            Parameters:
+              FunctionName: ${L2CallArn}
+              payload.$: $
+            ResultSelector:
+              job_id.$: $.Payload.job_id
+              items.$: $.Payload.items
+            Next: SaveResults
+          SaveResults:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke
+            Parameters:
+              FunctionName: ${L3SaveArn}
+              payload.$: $
+            ResultSelector:
+              job_id.$: $.Payload.job_id
+              rowCount.$: $.Payload.rowCount
+            End: true
+      Logging:
+        Level: ALL
+        IncludeExecutionData: true
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt StateMachineLogGroup.Arn
+      Tracing:
+        Enabled: true
+      Type: STANDARD
+      DefinitionSubstitutions:
+        L1FetchArn: !GetAtt L1Fetch.Arn
+        L2CallArn: !GetAtt L2Call.Arn
+        L3SaveArn: !GetAtt L3Save.Arn
+  StateMachineLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub
+        - /aws/vendedlogs/states/${AWS::StackName}-${ResourceId}-Logs
+        - ResourceId: StateMachine
 Outputs:
   HelloWorldApi:
     Description: 'API Gateway endpoint URL for Prod:'
@@ -196,13 +358,10 @@ Outputs:
     Value: !Ref Bucket
   FrontendDeployCommand:
     Description: Run this command to deploy index.html to s3 bucket
-    Value: !Sub 'aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html'
-  FrontendTeardownCommand:
+    Value: !Sub aws s3 cp ./wwwroot/index.html s3://${Bucket}/index.html
+  FrontendTearDwonCommand:
     Description: Run this command to remove index.html from s3 bucket
     Value: !Sub aws s3 rm s3://${Bucket}/index.html
-  InboxBucketTeardownCommand:
-    Description: Run this command to remove any uploads to our inbox s3 bucket
-    Value: !Sub aws s3 rb s3://${InboxBucket} --recursive --dryrun
   RemoveStackCommand:
     Description: Run this command to remove the stack
     Value: !Sub aws cloudformation delete-stack --stack-name ${AWS::StackName}
