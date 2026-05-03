@@ -63,18 +63,23 @@ Cullan Evans:
 # Well Architected Questions
 1. Operational Excellence
     Fiore: Monitor with CloudWatch and keep deployment repeatable with SAM.
-    Evans:
+    Evans: Use DevOps user stories, linked GitHub commits, and Gherkin feature files to track work clearly from planning to implementation.
     
 2. Security
     Fiore: Use least-privilege IAM and encrypt data at rest.
+    Evans: Restrict API Gateway routes, protect S3 buckets from public access, and require MFA on AWS root account
     
-3. Reliability
+4. Reliability
     Fiore: Add retries, backups, and alarms for failures.
-4. Performance
+    Evans: Use DynamoDB job status tracking so failed image processing steps can be identified and rerun.
+   
+6. Performance
     Fiore: Use serverless scaling and keep functions small.
+    Evans: Split the workflow into separate Lambda functions so tasks like fetching images and saving results run independently.
     
-5. Cost Optimization
+8. Cost Optimization
     Fiore: Use pay-per-request services and remove unused resources.
+    Evans: Use S3, Lambda, and DynamoDB only when processing jobs are needed. This keeps the monthly cost lower.
 
 # Security, Access, and Recovery
 - Apply least-privilege IAM so each Lambda only accesses the S3 bucket, DynamoDB table, or Step Functions execution it needs.
