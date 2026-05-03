@@ -1,3 +1,6 @@
+* Nicolas Fiore
+* 
+# Description
 ```mermaid
 graph TD
     User[User brower] --> APIG[API Gateway\nPublic Entry Point]
@@ -41,3 +44,24 @@ graph TD
    
     CW[CloudWatch] -.-> SF
 ```
+# DevOps 
+
+[picture here]
+
+
+# Well Architected Questions
+[Each answer question]
+1. 
+2. 
+3.
+4.
+5. 
+
+# TCO 
+[get quote from calculator.aws]
+
+# Template.yaml
+[#commnet each major section]
+
+# Picture
+[picture of website]
