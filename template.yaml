@@ -1,11 +1,13 @@
 Transform: AWS::Serverless-2016-10-31
 
+# Template input parameters
 Parameters:
   LabRoleArn:
     Type: String
     Description: The ARN of the LabRole AWS Learner Lab
     Default: arn:aws:iam::949571450787:role/LabRole
 Resources:
+  # API Gateway and health endpoint
   Api:
     Type: AWS::Serverless::Api
     Properties:
@@ -43,6 +45,8 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${HealthFunction}
       RetentionInDays: 7
+
+  # Static website hosting bucket and security policy
   Bucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -103,6 +107,8 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${StaticProxyFunction}
       RetentionInDays: 7
+
+  # Inbox S3 bucket for uploaded images and its access policy
   InboxBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -146,6 +152,8 @@ Resources:
             Condition:
               Bool:
                 aws:SecureTransport: 'false'
+
+  # Inbox API Lambda for managing uploaded image files
   LInbox:
     Type: AWS::Serverless::Function
     Properties:
@@ -219,6 +227,8 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${lsubmit}
       RetentionInDays: 7
+
+  # Job state table for workflow tracking
   JobsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -229,6 +239,7 @@ Resources:
       KeySchema:
         - AttributeName: jobid
           KeyType: HASH
+  # State machine worker Lambdas
   L1Fetch:
     Type: AWS::Serverless::Function
     Properties:
@@ -284,7 +295,9 @@ Resources:
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
-      Environment: {}
+      Environment:
+        Variables:
+          RECORDS_TABLE: !Ref RecordsTable
   L3SaveLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
@@ -292,6 +305,8 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${L3Save}
       RetentionInDays: 7
+
+  # Step Functions state machine orchestrating the processing pipeline
   StateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -350,6 +365,8 @@ Resources:
       LogGroupName: !Sub
         - /aws/vendedlogs/states/${AWS::StackName}-${ResourceId}-Logs
         - ResourceId: StateMachine
+
+  # Polling API for checking job status
   LPoll:
     Type: AWS::Serverless::Function
     Properties:
@@ -381,6 +398,58 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${LPoll}
       RetentionInDays: 7
+
+  # Records API and result storage
+  LRecords:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: LRecords
+      CodeUri: src/lrecords
+      Handler: lrecords.handler
+      Runtime: python3.13
+      Role: !Ref LabRoleArn
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          RECORDS_TABLE: !Ref RecordsTable
+      Events:
+        ApiGETRecords:
+          Type: Api
+          Properties:
+            Path: /api/records
+            Method: GET
+            RestApiId: !Ref Api
+        ApiDELETERecords:
+          Type: Api
+          Properties:
+            Path: /api/records/id
+            Method: DELETE
+            RestApiId: !Ref Api
+  LRecordsLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LRecords}
+      RetentionInDays: 7
+  # Result storage table for processed records
+  RecordsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+# Template outputs for deployment and testing
 Outputs:
   HelloWorldApi:
     Description: 'API Gateway endpoint URL for Prod:'

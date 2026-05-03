@@ -139,7 +139,7 @@
 			<div class="mb-10">
 				<h3 class="font-headline font-black text-xs uppercase tracking-[0.2em] text-[#b0ada6] mb-4">Station 01</h3>
 				<div class="flex items-center gap-3 p-3 bg-white/5 rounded-2xl">
-					<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"/>
+					<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></div>
 					<span class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Active Session</span>
 				</div>
 			</div>
@@ -227,7 +227,7 @@
 					
 						<!-- upload-btn -->
 						
-						<button id="upload-btn" class="w-full bg-surface-container-highest text-[#302f2a] py-6 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-white transition-all active:scale-95 shadow-xl">
+						<button id="upload-btn" class="w-full bg-[#ffd700] text-[#302f2a] py-6 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-95 shadow-xl">
 							<span class="material-symbols-outlined">cloud_upload</span>
                         Upload File
                     </button>
@@ -339,8 +339,8 @@
 		</div>
 		<!-- Background Decoration -->
 		<div class="fixed inset-0 pointer-events-none opacity-5 overflow-hidden">
-			<div class="absolute -top-1/4 -right-1/4 w-[800px] h-[800px] bg-[#ffd700] rounded-full blur-[200px]"/>
-			<div class="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#ffd700] rounded-full blur-[150px]"/>
+			<div class="absolute -top-1/4 -right-1/4 w-[800px] h-[800px] bg-[#ffd700] rounded-full blur-[200px]"></div>
+			<div class="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#ffd700] rounded-full blur-[150px]"></div>
 		</div>
 		<!-- AWS Integration Stubs -->
 
@@ -354,8 +354,9 @@
 
                 // This is where the API gateway address goes:
 				// Prolly have to change link HERE
-                const API = 'https://md4zlpa2q9.execute-api.us-east-1.amazonaws.com/Prod';
-
+                // const API = 'https://lb8v7xsk00.execute-api.us-east-1.amazonaws.com/Prod/';
+				const API = window.location.origin + '/Prod';
+				console.log("API: ", API);
                 // --- Inbox API calls
                 // Three funcions, GET, POST, and DELETE to /api/inbox
                 // Fx to fetch list of images from S3 via Lambda
@@ -510,7 +511,7 @@
 								</span>
 							</td>
 							<td class="py-4 px-2 text-right text-[#b0ada6] tabular-nums">${time}
-								<button onclick="deleteRecord(${row.id})" 
+								<button onclick="deleteRecord('${row.id}')" 
 								class="ml-3 text-[#b0ada6] hover:text-white hover:scale-125 transition-transform align-middle">
 									<span class="material-symbols-outlined text-base">close</span>
 								</button>

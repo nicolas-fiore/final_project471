@@ -27,4 +27,40 @@ manifest_hash = "d41d8cd98f00b204e9800998ecf8427e"
 packagetype = "Zip"
 functions = ["LInbox"]
 
+[function_build_definitions.e6bfec61-8ba3-4c06-9655-e5469151b517]
+codeuri = "/home/nicolasfiore/cloud_computing/final_project/src/lsubmit"
+runtime = "python3.13"
+architecture = "x86_64"
+handler = "handler.handler"
+manifest_hash = "d41d8cd98f00b204e9800998ecf8427e"
+packagetype = "Zip"
+functions = ["lsubmit"]
+
+[function_build_definitions.08708914-4fc2-453b-803e-196d7e2aefa0]
+codeuri = "/home/nicolasfiore/cloud_computing/final_project/src/statemachine"
+runtime = "python3.13"
+architecture = "x86_64"
+handler = "l1fetch.handler"
+manifest_hash = "d41d8cd98f00b204e9800998ecf8427e"
+packagetype = "Zip"
+functions = ["L1Fetch", "L2Call", "L3Save"]
+
+[function_build_definitions.75fa56cb-ebfb-4988-972c-98752e4a6cdf]
+codeuri = "/home/nicolasfiore/cloud_computing/final_project/src/lpoll"
+runtime = "python3.13"
+architecture = "x86_64"
+handler = "lpoll.handler"
+manifest_hash = "d41d8cd98f00b204e9800998ecf8427e"
+packagetype = "Zip"
+functions = ["LPoll"]
+
+[function_build_definitions.455b1198-73b1-417f-9f20-91419a946a09]
+codeuri = "/home/nicolasfiore/cloud_computing/final_project/src/lrecords"
+runtime = "python3.13"
+architecture = "x86_64"
+handler = "lrecords.handler"
+manifest_hash = "d41d8cd98f00b204e9800998ecf8427e"
+packagetype = "Zip"
+functions = ["LRecords"]
+
 [layer_build_definitions]
