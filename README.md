@@ -146,7 +146,7 @@ Feature: Poll job status and manage processed records
 ![trusted](./pics/advisor.png)
 
 # TCO 
-* 
+![TCO](./pics/AWSCostCalc1.png)
 
 # Template.yaml
 ```yaml
